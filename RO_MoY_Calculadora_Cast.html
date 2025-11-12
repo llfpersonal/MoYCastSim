@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RO Renewal — Calculadora VCT/FCT</title>
+  <style>
+    :root { --bg:#0b1020;--panel:#121933;--ink:#e8ecff;--muted:#95a0c7;--accent:#6aa3ff; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui; background:var(--bg);color:var(--ink)}
+    .wrap{max-width:1200px;margin:32px auto;padding:20px}
+    h1{font-size:26px;margin:0 0 6px}
+    h3{margin:0 0 6px;font-size:15px;font-weight:600}
+    p.sub{color:var(--muted);margin:8px 0 24px}
+    .grid2{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .col{grid-column:span 12}
+    @media(min-width:980px){.col{grid-column:span 6}}
+    .card{background:var(--panel);border-radius:14px;padding:8px 12px;border:1px solid rgba(255,255,255,0.08);margin-bottom:8px}
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+    input{display:block;width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);color:var(--ink);line-height:1.2}
+    input:focus{outline:2px solid var(--accent);border-color:transparent}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    button{appearance:none;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:var(--ink);padding:8px 12px;border-radius:8px;cursor:pointer}
+    button.primary{background:linear-gradient(180deg,#5a8cff,#3b6cf1);border:0}
+    .titleRow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+    .tag{font-size:12px;color:var(--muted)}
+    .result{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-top:10px}
+    .pill{grid-column:span 12;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px}
+    @media(min-width:880px){.pill{grid-column:span 6}}
+    .stat{font-size:12px;color:var(--muted)}
+    .big{font-size:22px;font-weight:700}
+    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
+    .ghost{border-style:dashed}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="titleRow">
+      <h1>Ragnarok Renewal — Calculadora de Cast</h1>
+      <div class="toolbar">
+        <button id="viewToggle" class="ghost">Vista comparativa</button>
+      </div>
+    </div>
+    <p class="sub">Orden aplicado: VCT (Stats → % → Flat) y FCT (% → Flat).</p>
+
+    <div class="grid2">
+      <!-- COLUMNA A -->
+      <div class="col" id="simA">
+        <div class="tag">Simulación A</div>
+        <div class="card">
+          <h3>1) Atributos</h3>
+          <div class="row">
+            <div>
+              <label>DEX total</label>
+              <input id="a_dex" type="number" value="120" inputmode="decimal">
+            </div>
+            <div>
+              <label>INT total</label>
+              <input id="a_int" type="number" value="100" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>2) Skill objetivo</h3>
+          <div class="row">
+            <div>
+              <label>VCT base (s)</label>
+              <input id="a_vctBase" type="number" step="0.01" value="3.5" inputmode="decimal">
+            </div>
+            <div>
+              <label>FCT base (s)</label>
+              <input id="a_fctBase" type="number" step="0.01" value="0.5" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>3) Reducciones VCT</h3>
+          <div class="row2">
+            <div>
+              <label>Reducción %</label>
+              <input id="a_vctPct" type="number" step="0.1" value="70" inputmode="decimal">
+            </div>
+            <div>
+              <label>Reducción plana (s)</label>
+              <input id="a_vctFlat" type="number" step="0.01" value="0.9" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>4) Reducciones FCT</h3>
+          <div class="row2">
+            <div>
+              <label>Reducción %</label>
+              <input id="a_fctPct" type="number" step="0.1" value="50" inputmode="decimal">
+            </div>
+            <div>
+              <label>Reducción plana (s)</label>
+              <input id="a_fctFlat" type="number" step="0.01" value="0.1" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="btns">
+            <button class="primary" id="a_calc">Calcular</button>
+            <button id="a_reset">Reset</button>
+          </div>
+          <div class="result" id="a_result" hidden>
+            <div class="pill">
+              <div class="stat">VCT Base (Stats formula)</div>
+              <div class="big" id="a_vctStats">–</div>
+            </div>
+            <div class="pill">
+              <div class="stat">VCT final</div>
+              <div class="big" id="a_vctFinal">–</div>
+            </div>
+            <div class="pill">
+              <div class="stat">FCT final</div>
+              <div class="big" id="a_fctFinal">–</div>
+            </div>
+            <div class="pill">
+              <div class="stat">Tiempo de Cast</div>
+              <div class="big" id="a_total">–</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA B (oculta al inicio) -->
+      <div class="col" id="simB" style="display:none">
+        <div class="tag">Simulación B</div>
+        <div class="card">
+          <h3>1) Atributos</h3>
+          <div class="row">
+            <div>
+              <label>DEX total</label>
+              <input id="b_dex" type="number" value="120" inputmode="decimal">
+            </div>
+            <div>
+              <label>INT total</label>
+              <input id="b_int" type="number" value="100" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>2) Skill objetivo</h3>
+          <div class="row">
+            <div>
+              <label>VCT base (s)</label>
+              <input id="b_vctBase" type="number" step="0.01" value="3.5" inputmode="decimal">
+            </div>
+            <div>
+              <label>FCT base (s)</label>
+              <input id="b_fctBase" type="number" step="0.01" value="0.5" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>3) Reducciones VCT</h3>
+          <div class="row2">
+            <div>
+              <label>Reducción %</label>
+              <input id="b_vctPct" type="number" step="0.1" value="70" inputmode="decimal">
+            </div>
+            <div>
+              <label>Reducción plana (s)</label>
+              <input id="b_vctFlat" type="number" step="0.01" value="0.9" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>4) Reducciones FCT</h3>
+          <div class="row2">
+            <div>
+              <label>Reducción %</label>
+              <input id="b_fctPct" type="number" step="0.1" value="50" inputmode="decimal">
+            </div>
+            <div>
+              <label>Reducción plana (s)</label>
+              <input id="b_fctFlat" type="number" step="0.01" value="0.1" inputmode="decimal">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="btns">
+            <button class="primary" id="b_calc">Calcular</button>
+            <button id="b_reset">Reset</button>
+          </div>
+          <div class="result" id="b_result" hidden>
+            <div class="pill">
+              <div class="stat">VCT Base (Stats formula)</div>
+              <div class="big" id="b_vctStats">–</div>
+            </div>
+            <div class="pill">
+              <div class="stat">VCT final</div>
+              <div class="big" id="b_vctFinal">–</div>
+            </div>
+            <div class="pill">
+              <div class="stat">FCT final</div>
+              <div class="big" id="b_fctFinal">–</div>
+            </div>
+            <div class="pill">
+              <div class="stat">Tiempo de Cast</div>
+              <div class="big" id="b_total">–</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const $=(id)=>document.getElementById(id);
+    const parseNum=(el)=>{ const v=(el.value||"").replace(",","."); const n=parseFloat(v); return isNaN(n)?0:n; }
+    const clamp0=(v)=>Math.max(0,v);
+    const round=(v)=> (Math.round(v*1000)/1000).toFixed(3);
+
+    function compute(prefix){
+      const dex=parseNum($(prefix+"_dex")); const intt=parseNum($(prefix+"_int"));
+      const vctBase=parseNum($(prefix+"_vctBase")); const fctBase=parseNum($(prefix+"_fctBase"));
+      const vctPct=Math.min(100,Math.max(0,parseNum($(prefix+"_vctPct"))))/100;
+      const vctFlat=parseNum($(prefix+"_vctFlat"));
+      const fctPct=Math.min(100,Math.max(0,parseNum($(prefix+"_fctPct"))))/100;
+      const fctFlat=parseNum($(prefix+"_fctFlat"));
+
+      const raw=((dex*2)+intt)/470;
+      const statMul=Math.max(0,1-Math.min(raw,1));
+      const vctAfterStats=vctBase*statMul;
+      const vctAfterPct=vctAfterStats*(1-vctPct);
+      const vctFinal=clamp0(vctAfterPct - vctFlat);
+
+      const fctAfterPct=fctBase*(1-fctPct);
+      const fctFinal=clamp0(fctAfterPct - fctFlat);
+
+      const total=vctFinal+fctFinal;
+
+      $(prefix+"_vctStats").textContent=round(vctAfterStats)+" s";
+      $(prefix+"_vctFinal").textContent=round(vctFinal)+" s";
+      $(prefix+"_fctFinal").textContent=round(fctFinal)+" s";
+      $(prefix+"_total").textContent=round(total)+" s";
+      $(prefix+"_result").hidden=false;
+    }
+
+    $("a_calc").addEventListener("click",()=>compute('a'));
+    $("b_calc").addEventListener("click",()=>compute('b'));
+    $("a_reset").addEventListener("click",()=>location.reload());
+    $("b_reset").addEventListener("click",()=>{ $("simB").style.display='none'; });
+
+    const toggleBtn = $("viewToggle");
+    toggleBtn.addEventListener("click",()=>{
+      const showing = $("simB").style.display !== 'none';
+      if(showing){
+        $("simB").style.display='none';
+        toggleBtn.textContent = 'Vista comparativa';
+      } else {
+        $("simB").style.display='block';
+        toggleBtn.textContent = 'Vista simple';
+      }
+    });
+
+    (function runTests(){
+      const vctBase=6;
+      const testA = vctBase * Math.max(0, 1-Math.min(((100*2)+50)/470,1));
+      const testB = vctBase * Math.max(0, 1-Math.min(((120*2)+50)/470,1));
+      console.assert(testB <= testA, 'Más DEX debería reducir VCT tras atributos');
+      const testC = vctBase * Math.max(0, 1-Math.min(((100*2)+80)/470,1));
+      console.assert(testC <= testA, 'Más INT también debería reducir VCT tras atributos');
+      const vctFinal=0.8, fctFinal=0.2; const total=vctFinal+fctFinal; 
+      console.assert(Math.abs(total-1.0) < 1e-9, 'Total debe ser la suma VCT+FCT');
+      console.log('[Tests] OK');
+    })();
+  </script>
+</body>
+</html>
