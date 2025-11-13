@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MoY — Calculadora VCT/FCT</title>
+  <title>RO Renewal — Calculadora VCT/FCT</title>
   <style>
     :root { --bg:#0b1020;--panel:#121933;--ink:#e8ecff;--muted:#95a0c7;--accent:#6aa3ff; }
     *{box-sizing:border-box}
@@ -33,12 +33,28 @@
     .big{font-size:22px;font-weight:700}
     .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
     .ghost{border-style:dashed}
+    .buffs {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+    .buffs label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+    .muted{color:var(--muted);font-size:12px}
+    .divider{height:1px;background:rgba(255,255,255,0.08);margin:8px 0}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="titleRow">
-      <h1>MoY — Calculadora de Cast</h1>
+      <h1>Ragnarok Renewal — Calculadora de Cast</h1>
       <div class="toolbar">
         <button id="viewToggle" class="ghost">Vista comparativa</button>
       </div>
@@ -54,7 +70,7 @@
           <div class="row">
             <div>
               <label>DEX total</label>
-              <input id="a_dex" type="number" value="120" inputmode="decimal">
+              <input id="a_dex" type="number" value="100" inputmode="decimal">
             </div>
             <div>
               <label>INT total</label>
@@ -63,42 +79,45 @@
           </div>
         </div>
         <div class="card">
-          <h3>2) Skill Cast time</h3>
+          <h3>2) Skill objetivo</h3>
           <div class="row">
             <div>
               <label>VCT base (s)</label>
-              <input id="a_vctBase" type="number" step="0.01" value="3.5" inputmode="decimal">
+              <input id="a_vctBase" type="number" step="0.01" value="6" inputmode="decimal">
             </div>
             <div>
               <label>FCT base (s)</label>
-              <input id="a_fctBase" type="number" step="0.01" value="0.5" inputmode="decimal">
+              <input id="a_fctBase" type="number" step="0.01" value="1.2" inputmode="decimal">
             </div>
           </div>
         </div>
         <div class="card">
-          <h3>3) Reducciones VCT</h3>
+          <h3>3) Reducciones</h3>
           <div class="row2">
             <div>
-              <label>Reducción %</label>
-              <input id="a_vctPct" type="number" step="0.1" value="70" inputmode="decimal">
+              <label>VCT — Reducción %</label>
+              <input id="a_vctPct" type="number" step="0.1" value="0" inputmode="decimal">
             </div>
             <div>
-              <label>Reducción plana (s)</label>
-              <input id="a_vctFlat" type="number" step="0.01" value="0.9" inputmode="decimal">
+              <label>VCT — Reducción plana (s)</label>
+              <input id="a_vctFlat" type="number" step="0.01" value="0" inputmode="decimal">
+            </div>
+            <div>
+              <label>FCT — Reducción %</label>
+              <input id="a_fctPct" type="number" step="0.1" value="0" inputmode="decimal">
+            </div>
+            <div>
+              <label>FCT — Reducción plana (s)</label>
+              <input id="a_fctFlat" type="number" step="0.01" value="0" inputmode="decimal">
             </div>
           </div>
-        </div>
-        <div class="card">
-          <h3>4) Reducciones FCT</h3>
-          <div class="row2">
-            <div>
-              <label>Reducción %</label>
-              <input id="a_fctPct" type="number" step="0.1" value="50" inputmode="decimal">
-            </div>
-            <div>
-              <label>Reducción plana (s)</label>
-              <input id="a_fctFlat" type="number" step="0.01" value="0.1" inputmode="decimal">
-            </div>
+          <div class="divider"></div>
+          <div class="muted">Buffs externos</div>
+          <div class="buffs">
+            <label><input type="checkbox" id="a_buff_bless"> Blessing Lv10</label>
+            <label><input type="checkbox" id="a_buff_chan"> Channeling Potion</label>
+            <label><input type="checkbox" id="a_buff_suffra"> Suffragium Lv3</label>
+            <label><input type="checkbox" id="a_buff_all25">Poem of Bragi</label>
           </div>
         </div>
         <div class="card">
@@ -148,38 +167,41 @@
           <div class="row">
             <div>
               <label>VCT base (s)</label>
-              <input id="b_vctBase" type="number" step="0.01" value="3.5" inputmode="decimal">
+              <input id="b_vctBase" type="number" step="0.01" value="6" inputmode="decimal">
             </div>
             <div>
               <label>FCT base (s)</label>
-              <input id="b_fctBase" type="number" step="0.01" value="0.5" inputmode="decimal">
+              <input id="b_fctBase" type="number" step="0.01" value="1.2" inputmode="decimal">
             </div>
           </div>
         </div>
         <div class="card">
-          <h3>3) Reducciones VCT</h3>
+          <h3>3) Reducciones</h3>
           <div class="row2">
             <div>
-              <label>Reducción %</label>
-              <input id="b_vctPct" type="number" step="0.1" value="70" inputmode="decimal">
+              <label>VCT — Reducción %</label>
+              <input id="b_vctPct" type="number" step="0.1" value="0" inputmode="decimal">
             </div>
             <div>
-              <label>Reducción plana (s)</label>
-              <input id="b_vctFlat" type="number" step="0.01" value="0.9" inputmode="decimal">
+              <label>VCT — Reducción plana (s)</label>
+              <input id="b_vctFlat" type="number" step="0.01" value="0" inputmode="decimal">
+            </div>
+            <div>
+              <label>FCT — Reducción %</label>
+              <input id="b_fctPct" type="number" step="0.1" value="0" inputmode="decimal">
+            </div>
+            <div>
+              <label>FCT — Reducción plana (s)</label>
+              <input id="b_fctFlat" type="number" step="0.01" value="0" inputmode="decimal">
             </div>
           </div>
-        </div>
-        <div class="card">
-          <h3>4) Reducciones FCT</h3>
-          <div class="row2">
-            <div>
-              <label>Reducción %</label>
-              <input id="b_fctPct" type="number" step="0.1" value="50" inputmode="decimal">
-            </div>
-            <div>
-              <label>Reducción plana (s)</label>
-              <input id="b_fctFlat" type="number" step="0.01" value="0.1" inputmode="decimal">
-            </div>
+          <div class="divider"></div>
+          <div class="muted">Buffs externos</div>
+          <div class="buffs">
+            <label><input type="checkbox" id="b_buff_bless"> Blessing Lv10 (+10 DEX, +10 INT, VCT -10%)</label>
+            <label><input type="checkbox" id="b_buff_chan"> Channeling Potion (VCT -10%)</label>
+            <label><input type="checkbox" id="b_buff_suffra"> Suffragium Lv3 (VCT -20%, FCT -0,15s)</label>
+            <label><input type="checkbox" id="b_buff_all25"> VCT y FCT -25%</label>
           </div>
         </div>
         <div class="card">
@@ -218,24 +240,49 @@
     const round=(v)=> (Math.round(v*1000)/1000).toFixed(3);
 
     function compute(prefix){
-      const dex=parseNum($(prefix+"_dex")); const intt=parseNum($(prefix+"_int"));
-      const vctBase=parseNum($(prefix+"_vctBase")); const fctBase=parseNum($(prefix+"_fctBase"));
-      const vctPct=Math.min(100,Math.max(0,parseNum($(prefix+"_vctPct"))))/100;
-      const vctFlat=parseNum($(prefix+"_vctFlat"));
-      const fctPct=Math.min(100,Math.max(0,parseNum($(prefix+"_fctPct"))))/100;
-      const fctFlat=parseNum($(prefix+"_fctFlat"));
+      // Base inputs
+      const dex=parseNum($(prefix+"_dex"));
+      const intt=parseNum($(prefix+"_int"));
+      const vctBase=parseNum($(prefix+"_vctBase"));
+      const fctBase=parseNum($(prefix+"_fctBase"));
+      let vctPct=Math.min(100,Math.max(0,parseNum($(prefix+"_vctPct"))))/100;
+      let vctFlat=parseNum($(prefix+"_vctFlat"));
+      let fctPct=Math.min(100,Math.max(0,parseNum($(prefix+"_fctPct"))))/100;
+      let fctFlat=parseNum($(prefix+"_fctFlat"));
 
-      const raw=((dex*2)+intt)/470;
-      const statMul=Math.max(0,1-Math.min(raw,1));
-      const vctAfterStats=vctBase*statMul;
-      const vctAfterPct=vctAfterStats*(1-vctPct);
-      const vctFinal=clamp0(vctAfterPct - vctFlat);
+      // Buffs
+      const bless=$(prefix+"_buff_bless").checked;
+      const chan =$(prefix+"_buff_chan").checked;
+      const suff =$(prefix+"_buff_suffra").checked;
+      const all25=$(prefix+"_buff_all25").checked;
 
-      const fctAfterPct=fctBase*(1-fctPct);
-      const fctFinal=clamp0(fctAfterPct - fctFlat);
+      // Apply stat buffs (Blessing)
+      const dexEff = dex + (bless?10:0);
+      const intEff = intt + (bless?10:0);
+
+      // Apply % and flat buffs
+      vctPct  += (bless?0.10:0) + (chan?0.10:0) + (suff?0.20:0) + (all25?0.25:0);
+      fctPct  += (all25?0.25:0);
+      fctFlat += (suff?0.15:0);
+
+      // clamp percents 0..0.999 (evita negativos inesperados por redondeos)
+      vctPct = Math.max(0, Math.min(vctPct, 0.999));
+      fctPct = Math.max(0, Math.min(fctPct, 0.999));
+
+      // === Cálculo ===
+      const raw=((dexEff*2)+intEff)/470;              // proporción anulada por stats
+      const statMul=Math.max(0,1-Math.min(raw,1));    // multiplicador restante de VCT
+      const vctAfterStats=vctBase*statMul;            // VCT tras atributos
+
+      const vctAfterPct=vctAfterStats*(1-vctPct);     // %
+      const vctFinal=clamp0(vctAfterPct - vctFlat);   // flat
+
+      const fctAfterPct=fctBase*(1-fctPct);           // %
+      const fctFinal=clamp0(fctAfterPct - fctFlat);   // flat
 
       const total=vctFinal+fctFinal;
 
+      // Output
       $(prefix+"_vctStats").textContent=round(vctAfterStats)+" s";
       $(prefix+"_vctFinal").textContent=round(vctFinal)+" s";
       $(prefix+"_fctFinal").textContent=round(fctFinal)+" s";
@@ -243,11 +290,13 @@
       $(prefix+"_result").hidden=false;
     }
 
+    // botones por columna
     $("a_calc").addEventListener("click",()=>compute('a'));
     $("b_calc").addEventListener("click",()=>compute('b'));
     $("a_reset").addEventListener("click",()=>location.reload());
     $("b_reset").addEventListener("click",()=>{ $("simB").style.display='none'; });
 
+    // toggle vista comparativa/simple
     const toggleBtn = $("viewToggle");
     toggleBtn.addEventListener("click",()=>{
       const showing = $("simB").style.display !== 'none';
@@ -260,15 +309,27 @@
       }
     });
 
+    // Pruebas (consola)
     (function runTests(){
-      const vctBase=6;
-      const testA = vctBase * Math.max(0, 1-Math.min(((100*2)+50)/470,1));
-      const testB = vctBase * Math.max(0, 1-Math.min(((120*2)+50)/470,1));
-      console.assert(testB <= testA, 'Más DEX debería reducir VCT tras atributos');
-      const testC = vctBase * Math.max(0, 1-Math.min(((100*2)+80)/470,1));
-      console.assert(testC <= testA, 'Más INT también debería reducir VCT tras atributos');
-      const vctFinal=0.8, fctFinal=0.2; const total=vctFinal+fctFinal; 
-      console.assert(Math.abs(total-1.0) < 1e-9, 'Total debe ser la suma VCT+FCT');
+      const base=6;
+      const vctA = base * Math.max(0, 1-Math.min(((100*2)+50)/470,1));
+      const vctB = base * Math.max(0, 1-Math.min(((120*2)+50)/470,1));
+      console.assert(vctB <= vctA, 'Más DEX reduce VCT tras stats');
+      const vctC = base * Math.max(0, 1-Math.min(((100*2)+80)/470,1));
+      console.assert(vctC <= vctA, 'Más INT reduce VCT tras stats');
+
+      // Buff Blessing debe reducir el tiempo total (por +stats y -10% VCT)
+      const sim = (dex,intt,vctPct,vctFlat,fctPct,fctFlat,bless)=>{
+        const dexE=dex+(bless?10:0); const intE=intt+(bless?10:0);
+        const raw=((dexE*2)+intE)/470; const m=Math.max(0,1-Math.min(raw,1));
+        const vctStats=base*m; const vctAfter=vctStats*(1-(vctPct+(bless?0.1:0)));
+        const vctF=Math.max(0,vctAfter - vctFlat); const fctF=Math.max(0, (1-fctPct)*0.5 - fctFlat);
+        return vctF+fctF;
+      };
+      const noBless = sim(100,50,0.2,0,0,0,false);
+      const yesBless= sim(100,50,0.2,0,0,0,true);
+      console.assert(yesBless <= noBless, 'Blessing debería bajar el tiempo total');
+
       console.log('[Tests] OK');
     })();
   </script>
